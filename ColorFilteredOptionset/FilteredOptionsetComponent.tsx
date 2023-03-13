@@ -5,13 +5,14 @@ export interface IFilteredOptionsetProps {
   value?: number | null;
   options: ComponentFramework.PropertyHelper.OptionMetadata[];
   isDisabled?: boolean;
-  hideChoice: "hideNoColor" | "hideColor" | "hideSpecificColor";
+  hideChoice: "hideNoColor" | "hideColor" | "hideSpecificColor" | "showSpecificColor";
   hideSpecificColor?: string;
   onChange: (newValue: number | undefined) => void;
+  masked: boolean;
 }
 
 export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetProps) => {
-  const { value, options, isDisabled, hideChoice, hideSpecificColor, onChange } = props;
+  const { value, options, isDisabled, hideChoice, hideSpecificColor, onChange, masked } = props;
   console.log(options);
 
   const valueKey = value != null ? value.toString() : undefined;
@@ -23,14 +24,20 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
       return {
         error: configError,
         options: options.filter((item) => {
-          if (hideChoice == "hideColor") {
-            return item.Color ?? true;
-          } else if (hideChoice == "hideNoColor") {
-            return item.Color ?? false;
-          } else if (hideChoice == "hideSpecificColor") {
-            return item.Color !== hideSpecificColor;
+          if (item.Value == value) {
+            return true;
+          } else {
+            if (hideChoice == "hideColor") {
+              return !item.Color;
+            } else if (hideChoice == "hideNoColor") {
+              return item.Color ?? false;
+            } else if (hideChoice == "hideSpecificColor") {
+              return item.Color !== hideSpecificColor;
+            } else if (hideChoice == "showSpecificColor") {
+              return item.Color === hideSpecificColor;
+            }
+            return false;
           }
-          return false;
         }).map((item) => {
             return {
                 key: item.Value.toString(),
@@ -59,8 +66,9 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
   return (
     <>
     {items.error}
+    {masked && '****'}
 
-    {!items.error && items.options && (
+    {!items.error && !masked && items.options && (
       <Dropdown
         options={items.options}
         selectedKey={valueKey}

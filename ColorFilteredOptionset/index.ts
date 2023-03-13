@@ -41,12 +41,21 @@ export class ColorFilteredOptionset implements ComponentFramework.ReactControl<I
      */
     public updateView(context: ComponentFramework.Context<IInputs>): React.ReactElement {
         const {value, hideChoice, hideSpecificColor} = context.parameters;
+
+        let disabled = context.mode.isControlDisabled;
+        let masked = false;
+        if (value.security) {
+            disabled = disabled || !value.security.editable;
+            masked = !value.security.readable;
+        }
+
         let props: IFilteredOptionsetProps = {
             onChange: this.onChange, 
             options: [],
             hideChoice: hideChoice.raw,
             hideSpecificColor: hideSpecificColor.raw ?? undefined,
-            isDisabled: context.mode.isControlDisabled,
+            isDisabled: disabled,
+            masked: masked,
         };
 
         if (value && value.attributes) {
