@@ -11,7 +11,7 @@ This global Choice has 6 options with 3 different color configurations. Red has 
 Add the component to your optionset and configure it. There are 4 options on the behavior; hide options with no color, hide option with any color, hide a specific color, and show a specific color.
 
 | Setting | Description |
------------
+|---------|-------------|
 | Value | Column to where the component is bound to |
 | Hide/Show setting | The 4 behavior options |
 | Which specific color to hide/show | The hex value of the color that either needs to be filtered out or shown. Needs to be provided in the HTML Hex value e.g. '#ff0000'. This value is in the Choice configuration |
