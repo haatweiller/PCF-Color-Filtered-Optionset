@@ -13,7 +13,6 @@ export interface IFilteredOptionsetProps {
 
 export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetProps) => {
   const { value, options, isDisabled, hideChoice, hideSpecificColor, onChange, masked } = props;
-  console.log(options);
 
   const valueKey = value != null ? value.toString() : undefined;
   const items = React.useMemo(() => {
