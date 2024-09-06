@@ -3,9 +3,9 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import { FilteredOptionsetComponent, IFilteredOptionsetProps } from "../components/FilteredOptionsetComponent";
 import { fallbackLightTheme } from "../components/fallbackTheme";
 
-export class ColorFilteredOptionset implements ComponentFramework.ReactControl<IInputs, IOutputs> {
+export class ColorFilteredMultiSelectOptionSet implements ComponentFramework.ReactControl<IInputs, IOutputs> {
     private notifyOutputChanged: () => void;
-    private selectedValue: number | undefined;
+    private selectedValue: number[] | undefined;
     private context: ComponentFramework.Context<IInputs>;
 
     /**
@@ -33,8 +33,11 @@ export class ColorFilteredOptionset implements ComponentFramework.ReactControl<I
     }
 
     private onChange = (newValue: string[] | undefined): void => {
-        if (newValue !== undefined && newValue?.length > 0)
-            this.selectedValue = Number(newValue[0]);
+        if (newValue !== undefined && newValue?.length > 0) {
+            const selectedValues:number[] = [];
+            newValue.map((value) => selectedValues.push(Number(value)));
+            this.selectedValue = selectedValues;
+        }
         else
             this.selectedValue = undefined;
         this.notifyOutputChanged();
@@ -46,7 +49,7 @@ export class ColorFilteredOptionset implements ComponentFramework.ReactControl<I
      * @returns ReactElement root react element for the control
      */
     public updateView(context: ComponentFramework.Context<IInputs>): React.ReactElement {
-        const value : ComponentFramework.PropertyTypes.OptionSetProperty = context.parameters.value;
+        const value : ComponentFramework.PropertyTypes.MultiSelectOptionSetProperty = context.parameters.value;
 
         const hideChoice = context.parameters.hideChoice;
         const hideSpecificColor = context.parameters.hideSpecificColor;
@@ -68,7 +71,7 @@ export class ColorFilteredOptionset implements ComponentFramework.ReactControl<I
             isDisabled: disabled,
             masked: masked,
             isRequired: requiredLevel === 1 || requiredLevel === 2, // SystemRequired or ApplicationRequired
-            multiSelect: false,
+            multiSelect: true,
             theme: context.fluentDesignLanguage?.tokenTheme ?? fallbackLightTheme,
         };
 

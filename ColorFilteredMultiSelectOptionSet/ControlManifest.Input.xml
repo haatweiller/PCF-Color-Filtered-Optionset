@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="mhh" constructor="ColorFilteredOptionset" version="0.0.1" display-name-key="ColorFilteredOptionset_Name" description-key="ColorFilteredOptionset_Desc" control-type="virtual" >
+  <control namespace="mhh" constructor="ColorFilteredMultiSelectOptionSet" version="0.0.1" display-name-key="ColorFilteredMultiSelectOptionSet_Name" description-key="ColorFilteredMultiSelectOptionSet_Desc" control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
     <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
-    <property name="value" display-name-key="Value_Display_Key" description-key="Value_Desc_Key" of-type="OptionSet" usage="bound" required="true" />
+    <property name="value" display-name-key="Value_Display_Key" description-key="Value_Desc_Key" of-type="MultiSelectOptionSet" usage="bound" required="true" />
     <property name="hideChoice" display-name-key="HideChoice_Display_Key" description-key="HideChoice_Desc_Key" of-type="Enum" usage= "input" required="true" default-value="hideNoColor">
       <value name="hideNoColor" display-name-key="HideChoice_hideNoColor_Display_Key">hideNoColor</value>
       <value name="hideColor" display-name-key="HideChoice_hideColor_Display_Key">hideColor</value>
@@ -17,9 +17,9 @@
       <code path="index.ts" order="1"/>
       <platform-library name="React" version="16.8.6" />
       <platform-library name="Fluent" version="9.4.0" />
-      <resx path="strings/ColorFilteredOptionset.1033.resx" version="1.0.0" />
+      <resx path="strings/ColorFilteredMultiSelectOptionSet.1033.resx" version="1.0.0" />
       <!-- UNCOMMENT TO ADD MORE RESOURCES
-      <css path="css/ColorFilteredOptionset.css" order="1" />
+      <css path="css/ColorFilteredMultiSelectOptionSet.css" order="1" />
       -->
     </resources>
     <!-- UNCOMMENT TO ENABLE THE SPECIFIED API
