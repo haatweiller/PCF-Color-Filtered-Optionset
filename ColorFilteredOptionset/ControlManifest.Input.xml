@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="mhh" constructor="ColorFilteredOptionset" version="0.0.1" display-name-key="ColorFilteredOptionset_Name" description-key="ColorFilteredOptionset_Desc" control-type="virtual" >
+  <control namespace="mhh" constructor="ColorFilteredOptionset" version="0.0.2" display-name-key="ColorFilteredOptionset_Name" description-key="ColorFilteredOptionset_Desc" control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
     <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
