@@ -102,8 +102,8 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
     multiselect: multiSelect,
     clearable: !isRequired,
     value: value,
-    onOptionSelect: onOptionSelect,
     className: styles.root,
+    onOptionSelect: onOptionSelect,
     selectedOptions: selectedOptions,
   }
 
@@ -112,7 +112,7 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
   }
 
   return (
-    <>
+    <div className={styles.root}>
       {items.error}
       {masked && '****'}
 
@@ -129,7 +129,7 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
           </Dropdown>
         </FluentProvider>
       )}
-    </>
+    </div>
   );
 });
 FilteredOptionsetComponent.displayName = 'FilteredOptionsetComponent';
