@@ -102,7 +102,7 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
     multiselect: multiSelect,
     clearable: !isRequired,
     value: value,
-    className: styles.root,
+    className: styles.dropdown,
     onOptionSelect: onOptionSelect,
     selectedOptions: selectedOptions,
   }
@@ -137,6 +137,10 @@ FilteredOptionsetComponent.displayName = 'FilteredOptionsetComponent';
 const _useStyles = makeStyles({
   root: { 
     margin: "auto 0", 
+    width: "100%",
+  },
+  dropdown: { 
+    minWidth: 'unset',
     width: "100%",
   },
 });

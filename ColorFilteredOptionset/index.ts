@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import { FilteredOptionsetComponent, IFilteredOptionsetProps } from "../components/FilteredOptionsetComponent";
-import { fallbackLightTheme } from "../components/fallbackTheme";
+import { webLightTheme } from "@fluentui/react-components";
 
 export class ColorFilteredOptionset implements ComponentFramework.ReactControl<IInputs, IOutputs> {
     private notifyOutputChanged: () => void;
@@ -69,7 +69,7 @@ export class ColorFilteredOptionset implements ComponentFramework.ReactControl<I
             masked: masked,
             isRequired: requiredLevel === 1 || requiredLevel === 2, // SystemRequired or ApplicationRequired
             multiSelect: false,
-            theme: context.fluentDesignLanguage?.tokenTheme ?? fallbackLightTheme,
+            theme: context.fluentDesignLanguage?.tokenTheme ?? webLightTheme,
         };
 
         if (value && value.attributes) {
