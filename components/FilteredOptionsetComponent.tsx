@@ -20,79 +20,73 @@ export interface IOption {
   data: number | null;
   text: string;
   selected: boolean;
+  isValid: boolean;
 }
 
 export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetProps) => {
   const { currentValue, options, isDisabled, hideChoice, hideSpecificColor, onChange, masked, isRequired, multiSelect } = props;
   
-  const items = React.useMemo(() => {
-    let configError: string | undefined;
-    const selectedValue: number[] = typeof currentValue === "number" ? [currentValue] : currentValue ?? [];
+  const [validOptions, setValidOptions] = React.useState<IOption[]>([]);
+  const [error, setError] = React.useState<string>();
+  const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
+  const [value, setValue] = React.useState("");
+
+  const isValidOption = (itemColor: string) => {
+    if (hideChoice == "hideColor") {
+      return !itemColor;
+    } else if (hideChoice == "hideNoColor") {
+      return itemColor ?? false;
+    } else if (hideChoice == "hideSpecificColor") {
+      return itemColor !== hideSpecificColor;
+    } else if (hideChoice == "showSpecificColor") {
+      return itemColor === hideSpecificColor;
+    }
+    return false;
+  };
+
+  React.useEffect(() => {
     if (options) {
-      if (hideChoice == "hideSpecificColor" && !hideSpecificColor)
-        configError = "Empty hideSpecificColor";
-      return {
-        error: configError,
-        options: options.filter((item) => {
-          if (selectedValue.includes(item.Value)) {
-            return true;
-          } else {
-            if (hideChoice == "hideColor") {
-              return !item.Color;
-            } else if (hideChoice == "hideNoColor") {
-              return item.Color ?? false;
-            } else if (hideChoice == "hideSpecificColor") {
-              return item.Color !== hideSpecificColor;
-            } else if (hideChoice == "showSpecificColor") {
-              return item.Color === hideSpecificColor;
-            }
-            return false;
-          }
-        }).map((item) => {
-          return {
-            key: item.Value.toString(),
-            data: item.Value,
-            text: item.Label,
-            selected: selectedValue.includes(item.Value),
-          } as IOption;
-        }),
-      };
+      const selectedValue: number[] = typeof currentValue === "number" ? [currentValue] : currentValue ?? [];
+      const optionMap = options.map((item) => {
+        return {
+          key: item.Value.toString(),
+          data: item.Value,
+          text: item.Label,
+          selected: selectedValue.includes(item.Value),
+          isValid: isValidOption(item.Color),
+        } as IOption;
+      });
+      setValidOptions(optionMap.filter((item) => {return item.isValid || item.selected}));
+
+      if (currentValue) {
+        const selectedOptions:string[] = [];
+        const selectedValues:string[] = [];
+        optionMap.filter((option) => option.selected).forEach((option)=>{
+          selectedOptions.push(option.key.toString())
+          selectedValues.push(option.text);
+        });
+        setSelectedOptions(selectedOptions);
+        setValue(selectedValues.join(", "))
+      }
     }
     else {
-      configError = 'No options found';
-      return {
-        error: configError,
-        options: [] as IOption[],
-      };
+      setError("No options found");
     }
   }, [options, currentValue]);
 
-  const [selectedOptions, setSelectedOptions] = React.useState<string[]>(()=>{
-    const options:string[] = [];
-    items.options.filter((option) => option.selected).forEach((option)=>options.push(option.key.toString()));
-    return options;
-  });
-  const [value, setValue] = React.useState(()=>{
-    const options:string[] = [];
-    items.options.filter((option) => option.selected).forEach((option)=>options.push(option.text));
-    return options.join(", ");
-  });
-
   const onOptionSelect: (DropdownProps)["onOptionSelect"] = (ev, data) => {
-    items.options = items.options.map((item) => {
+    setValidOptions(validOptions.map((item) => {
       return {
         key: item.key,
         data: item.data,
         text: item.text,
         selected: data.selectedOptions.includes(item.key.toString()),
+        isValid: item.isValid,
       } as IOption;
-    });
+    }).filter((option) => option.selected || option.isValid));
     setSelectedOptions(data.selectedOptions);
-    setValue(()=>{
-      const options:string[] = [];
-      items.options.filter((option) => option.selected).forEach((option)=>options.push(option.text));
-      return options.join(", ");
-    });
+    setValue(data.optionText ?? "");
+    
     onChange(data.selectedOptions);
   };
   const styles = _useStyles();
@@ -113,15 +107,15 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
 
   return (
     <div className={styles.root}>
-      {items.error}
+      {error}
       {masked && '****'}
 
-      {!items.error && !masked && items.options && (
+      {!error && !masked && validOptions && (
         <FluentProvider theme={props.theme}>
           <Dropdown
             {...dropDownProps}
           >
-            {items.options.map( (option: IOption) =>(
+            {validOptions.map( (option: IOption) =>(
               <Option key={option.key} value={option.key.toString()}>
                 {option.text}
               </Option>
