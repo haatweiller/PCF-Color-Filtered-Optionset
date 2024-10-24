@@ -58,7 +58,7 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
       });
       setValidOptions(optionMap.filter((item) => {return item.isValid || item.selected}));
 
-      if (currentValue) {
+      if (currentValue !== null && currentValue !== undefined) {
         const selectedOptions:string[] = [];
         const selectedValues:string[] = [];
         optionMap.filter((option) => option.selected).forEach((option)=>{
@@ -67,6 +67,10 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
         });
         setSelectedOptions(selectedOptions);
         setValue(selectedValues.join(", "))
+      }
+      else {
+        setSelectedOptions([]);
+        setValue("");
       }
     }
     else {
