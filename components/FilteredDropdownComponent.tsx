@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Dropdown, Option, FluentProvider, Theme, makeStyles } from "@fluentui/react-components";
 import type { DropdownProps } from "@fluentui/react-components";
 
-export interface IFilteredOptionsetProps {
+export interface IFilteredDropdownProps {
   currentValue?: number | number[] | null;
   options: ComponentFramework.PropertyHelper.OptionMetadata[];
   isDisabled?: boolean;
@@ -23,7 +23,7 @@ export interface IOption {
   isValid: boolean;
 }
 
-export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetProps) => {
+export const FilteredDropdownComponent = React.memo((props: IFilteredDropdownProps) => {
   const { currentValue, options, isDisabled, hideChoice, hideSpecificColor, onChange, masked, isRequired, multiSelect } = props;
   
   const [validOptions, setValidOptions] = React.useState<IOption[]>([]);
@@ -130,14 +130,15 @@ export const FilteredOptionsetComponent = React.memo((props: IFilteredOptionsetP
     </div>
   );
 });
-FilteredOptionsetComponent.displayName = 'FilteredOptionsetComponent';
+FilteredDropdownComponent.displayName = 'FilteredDropdownComponent';
 
 const _useStyles = makeStyles({
   root: { 
     margin: "auto 0", 
     width: "100%",
   },
-  dropdown: { 
+  dropdown: {
+    margin: "auto 0",
     minWidth: 'unset',
     width: "100%",
   },

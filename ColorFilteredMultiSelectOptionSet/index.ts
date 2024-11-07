@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
-import { FilteredOptionsetComponent, IFilteredOptionsetProps } from "../components/FilteredOptionsetComponent";
+import { FilteredDropdownComponent, IFilteredDropdownProps } from "../components/FilteredDropdownComponent";
 import { webLightTheme } from "@fluentui/react-components";
 
 export class ColorFilteredMultiSelectOptionSet implements ComponentFramework.ReactControl<IInputs, IOutputs> {
@@ -63,7 +63,7 @@ export class ColorFilteredMultiSelectOptionSet implements ComponentFramework.Rea
             masked = !value.security.readable;
         }
 
-        const props: IFilteredOptionsetProps = {
+        const props: IFilteredDropdownProps = {
             onChange: this.onChange, 
             options: [],
             hideChoice: hideChoice.raw,
@@ -84,7 +84,7 @@ export class ColorFilteredMultiSelectOptionSet implements ComponentFramework.Rea
             }
         }
         return React.createElement(
-            FilteredOptionsetComponent, props
+            FilteredDropdownComponent, props
         );
     }
 

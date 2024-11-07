@@ -1,7 +1,8 @@
 import * as React from "react";
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
-import { FilteredOptionsetComponent, IFilteredOptionsetProps } from "../components/FilteredOptionsetComponent";
+import { FilteredDropdownComponent, IFilteredDropdownProps } from "../components/FilteredDropdownComponent";
 import { webLightTheme } from "@fluentui/react-components";
+import { FilteredRadiogroupComponent, IFilteredRadiogroupProps } from "../components/FilteredRadiogroupComponent";
 
 export class ColorFilteredOptionset implements ComponentFramework.ReactControl<IInputs, IOutputs> {
     private notifyOutputChanged: () => void;
@@ -37,6 +38,7 @@ export class ColorFilteredOptionset implements ComponentFramework.ReactControl<I
             this.selectedValue = Number(newValue[0]);
         else
             this.selectedValue = undefined;
+
         this.notifyOutputChanged();
     };
 
@@ -51,6 +53,8 @@ export class ColorFilteredOptionset implements ComponentFramework.ReactControl<I
         const hideChoice = context.parameters.hideChoice;
         const hideSpecificColor = context.parameters.hideSpecificColor;
 
+        const controlType = context.parameters.controlType.raw;
+
         const requiredLevel = value.attributes?.RequiredLevel;
 
         let disabled = context.mode.isControlDisabled;
@@ -60,29 +64,55 @@ export class ColorFilteredOptionset implements ComponentFramework.ReactControl<I
             masked = !value.security.readable;
         }
 
-        const props: IFilteredOptionsetProps = {
-            onChange: this.onChange, 
-            options: [],
-            hideChoice: hideChoice.raw,
-            hideSpecificColor: hideSpecificColor.raw ?? undefined,
-            isDisabled: disabled,
-            masked: masked,
-            isRequired: requiredLevel === 1 || requiredLevel === 2, // SystemRequired or ApplicationRequired
-            multiSelect: false,
-            theme: context.fluentDesignLanguage?.tokenTheme ?? webLightTheme,
-        };
-
-        if (value && value.attributes) {
-            const options = value.attributes.Options;
-
-            if (options) {
-                props.options = options;
-                props.currentValue = value.raw;
+        if (controlType === "choicegroup") {
+            const props: IFilteredRadiogroupProps = {
+                onChange: this.onChange, 
+                options: [],
+                hideChoice: hideChoice.raw,
+                hideSpecificColor: hideSpecificColor.raw ?? undefined,
+                isDisabled: disabled,
+                masked: masked,
+                isRequired: requiredLevel === 1 || requiredLevel === 2, // SystemRequired or ApplicationRequired
+                theme: context.fluentDesignLanguage?.tokenTheme ?? webLightTheme,
+            };
+    
+            if (value && value.attributes) {
+                const options = value.attributes.Options;
+    
+                if (options) {
+                    props.options = options;
+                    props.currentValue = value.raw;
+                }
             }
+            return React.createElement(
+                FilteredRadiogroupComponent, props
+            );
         }
-        return React.createElement(
-            FilteredOptionsetComponent, props
-        );
+        else {
+            const props: IFilteredDropdownProps = {
+                onChange: this.onChange, 
+                options: [],
+                hideChoice: hideChoice.raw,
+                hideSpecificColor: hideSpecificColor.raw ?? undefined,
+                isDisabled: disabled,
+                masked: masked,
+                isRequired: requiredLevel === 1 || requiredLevel === 2, // SystemRequired or ApplicationRequired
+                multiSelect: false,
+                theme: context.fluentDesignLanguage?.tokenTheme ?? webLightTheme,
+            };
+    
+            if (value && value.attributes) {
+                const options = value.attributes.Options;
+    
+                if (options) {
+                    props.options = options;
+                    props.currentValue = value.raw;
+                }
+            }
+            return React.createElement(
+                FilteredDropdownComponent, props
+            );
+        }
     }
 
     /**
