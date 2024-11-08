@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="mhh" constructor="ColorFilteredOptionset" version="0.0.18" display-name-key="ColorFilteredOptionset_Name" description-key="ColorFilteredOptionset_Desc" control-type="virtual" >
+  <control namespace="mhh" constructor="ColorFilteredOptionset" version="0.0.19" display-name-key="ColorFilteredOptionset_Name" description-key="ColorFilteredOptionset_Desc" control-type="virtual" >
     <external-service-usage enabled="false">
     </external-service-usage>
     <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
@@ -12,7 +12,7 @@
       <value name="showSpecificColor" display-name-key="HideChoice_showSpecificColor_Display_Key">showSpecificColor</value>
     </property>
     <property name="hideSpecificColor" display-name-key="HideSpecificColor_Display_Key" description-key="HideSpecificColor_Desc_Key" of-type="SingleLine.Text" usage="input" required="false" default-value="#ff0000" />
-    <property name="controlType" display-name-key="Control_Type" of-type="Enum" usage="input" required="true" default-value="dropdown">
+    <property name="controlType" display-name-key="Control_Type" of-type="Enum" usage="input" default-value="dropdown">
       <value name="dropdown" display-name-key="controlType_dropdown_displayname">dropdown</value>
       <value name="choicegroup" display-name-key="controlType_choicegroup_displayname">choicegroup</value>
     </property>
